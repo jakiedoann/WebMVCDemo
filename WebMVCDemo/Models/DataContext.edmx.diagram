@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a886494ce4614bbbab5cf99450ea6a98" Name="Diagram1">
+        <EntityTypeShape EntityType="ShopGiayOnlineModel.Banner" Width="1.5" PointX="2.75" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShopGiayOnlineModel.ChiTietHoaDon" Width="1.5" PointX="3" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShopGiayOnlineModel.ChiTietSanPham" Width="1.5" PointX="6" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShopGiayOnlineModel.Customer" Width="1.5" PointX="1.5" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShopGiayOnlineModel.HoaDon" Width="1.5" PointX="0.75" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShopGiayOnlineModel.Menu" Width="1.5" PointX="4.75" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShopGiayOnlineModel.NhomSanPham" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShopGiayOnlineModel.SanPham" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <AssociationConnector Association="ShopGiayOnlineModel.FK_ChiTietHoaDon_HoaDon" ManuallyRouted="false" />
+        <AssociationConnector Association="ShopGiayOnlineModel.FK_ChiTietHoaDon_SanPham" ManuallyRouted="false" />
+        <AssociationConnector Association="ShopGiayOnlineModel.FK_ChiTietSanPham_NhomSanPham" ManuallyRouted="false" />
+        <AssociationConnector Association="ShopGiayOnlineModel.FK_ChiTietSanPham_SanPham" ManuallyRouted="false" />
+        <AssociationConnector Association="ShopGiayOnlineModel.FK_HoaDon_Customer" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
