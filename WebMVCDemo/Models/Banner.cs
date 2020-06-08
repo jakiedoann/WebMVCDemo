@@ -15,7 +15,7 @@ namespace WebMVCDemo.Models
     public partial class Banner
     {
         public int Id { get; set; }
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
         public string Link { get; set; }
         public string Meta { get; set; }
         public Nullable<bool> Hide { get; set; }

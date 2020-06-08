@@ -24,7 +24,7 @@ namespace WebMVCDemo.Models
         public Nullable<int> Order { get; set; }
         public Nullable<System.DateTime> DateBegin { get; set; }
     
+        public virtual ChiTietSanPham ChiTietSanPham { get; set; }
         public virtual HoaDon HoaDon { get; set; }
-        public virtual SanPham SanPham { get; set; }
     }
 }

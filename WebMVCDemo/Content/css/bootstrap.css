@@ -1125,9 +1125,12 @@ img {
 .thumbnail a > img,
 .carousel-inner > .item > img,
 .carousel-inner > .item > a > img {
-  display: block;
+  /*display: block;
   max-width: 100%;
-  height: auto;
+  height: auto;*/
+  width: 100%;
+  height: 100%;
+  margin: auto;
 }
 .img-rounded {
   border-radius: 6px;
@@ -1602,6 +1605,7 @@ pre code {
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+  background-color: black;
 }
 .row {
   margin-right: -15px;
@@ -1944,7 +1948,7 @@ pre code {
     width: 75%;
   }
   .col-md-8 {
-    width: 66.66666667%;
+    width: 100%;
   }
   .col-md-7 {
     width: 58.33333333%;
@@ -4070,7 +4074,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   position: relative;
   min-height: 50px;
   margin-bottom: 20px;
-  border: 1px solid transparent;
+
 }
 @media (min-width: 768px) {
   .navbar {
@@ -6082,7 +6086,7 @@ button.close {
 }
 .carousel-inner > .item > img,
 .carousel-inner > .item > a > img {
-  line-height: 1;
+    line-height: 1;
 }
 @media all and (transform-3d), (-webkit-transform-3d) {
   .carousel-inner > .item {
@@ -6097,6 +6101,7 @@ button.close {
   }
   .carousel-inner > .item.next,
   .carousel-inner > .item.active.right {
+      width: 100%;
     left: 0;
     -webkit-transform: translate3d(100%, 0, 0);
             transform: translate3d(100%, 0, 0);

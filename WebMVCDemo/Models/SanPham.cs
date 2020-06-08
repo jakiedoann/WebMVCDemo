@@ -14,14 +14,8 @@ namespace WebMVCDemo.Models
     
     public partial class SanPham
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SanPham()
-        {
-            this.ChiTietHoaDons = new HashSet<ChiTietHoaDon>();
-            this.ChiTietSanPhams = new HashSet<ChiTietSanPham>();
-        }
-    
         public int MaSP { get; set; }
+        public int MaNhom { get; set; }
         public string TenSP { get; set; }
         public Nullable<int> Gia { get; set; }
         public string MoTa { get; set; }
@@ -37,9 +31,7 @@ namespace WebMVCDemo.Models
         public Nullable<int> Order { get; set; }
         public Nullable<System.DateTime> DateBegin { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ChiTietHoaDon> ChiTietHoaDons { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ChiTietSanPham> ChiTietSanPhams { get; set; }
+        public virtual ChiTietSanPham ChiTietSanPham { get; set; }
+        public virtual NhomSanPham NhomSanPham { get; set; }
     }
 }

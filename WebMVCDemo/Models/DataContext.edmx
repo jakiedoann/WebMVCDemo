@@ -10,7 +10,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Image" Type="varbinary(max)" />
+          <Property Name="Image" Type="varchar(max)" />
           <Property Name="Link" Type="nvarchar(max)" />
           <Property Name="Meta" Type="nvarchar" MaxLength="50" />
           <Property Name="Hide" Type="bit" />
@@ -20,7 +20,6 @@
         <EntityType Name="ChiTietHoaDon">
           <Key>
             <PropertyRef Name="MaHD" />
-            <PropertyRef Name="MaSP" />
           </Key>
           <Property Name="MaHD" Type="int" Nullable="false" />
           <Property Name="MaSP" Type="int" Nullable="false" />
@@ -34,11 +33,9 @@
         </EntityType>
         <EntityType Name="ChiTietSanPham">
           <Key>
-            <PropertyRef Name="MaSp" />
-            <PropertyRef Name="MaNhom" />
+            <PropertyRef Name="MaSP" />
           </Key>
-          <Property Name="MaSp" Type="int" Nullable="false" />
-          <Property Name="MaNhom" Type="int" Nullable="false" />
+          <Property Name="MaSP" Type="int" Nullable="false" />
           <Property Name="Mau" Type="nvarchar" MaxLength="50" />
           <Property Name="Size" Type="varchar" MaxLength="10" />
           <Property Name="Meta" Type="nvarchar" MaxLength="50" />
@@ -100,10 +97,11 @@
             <PropertyRef Name="MaSP" />
           </Key>
           <Property Name="MaSP" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaNhom" Type="int" Nullable="false" />
           <Property Name="TenSP" Type="nvarchar" MaxLength="50" />
           <Property Name="Gia" Type="int" />
           <Property Name="MoTa" Type="nvarchar" MaxLength="500" />
-          <Property Name="Img" Type="varchar" MaxLength="50" />
+          <Property Name="Img" Type="varchar(max)" />
           <Property Name="SoLuongTon" Type="int" />
           <Property Name="LuotXem" Type="int" />
           <Property Name="LuotBinhChon" Type="int" />
@@ -115,9 +113,21 @@
           <Property Name="Order" Type="int" />
           <Property Name="DateBegin" Type="smalldatetime" />
         </EntityType>
+        <Association Name="FK_ChiTietHoaDon_ChiTietSanPham">
+          <End Role="ChiTietSanPham" Type="Self.ChiTietSanPham" Multiplicity="1" />
+          <End Role="ChiTietHoaDon" Type="Self.ChiTietHoaDon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ChiTietSanPham">
+              <PropertyRef Name="MaSP" />
+            </Principal>
+            <Dependent Role="ChiTietHoaDon">
+              <PropertyRef Name="MaSP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ChiTietHoaDon_HoaDon">
           <End Role="HoaDon" Type="Self.HoaDon" Multiplicity="1" />
-          <End Role="ChiTietHoaDon" Type="Self.ChiTietHoaDon" Multiplicity="*" />
+          <End Role="ChiTietHoaDon" Type="Self.ChiTietHoaDon" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="HoaDon">
               <PropertyRef Name="MaHD" />
@@ -127,39 +137,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ChiTietHoaDon_SanPham">
-          <End Role="SanPham" Type="Self.SanPham" Multiplicity="1" />
-          <End Role="ChiTietHoaDon" Type="Self.ChiTietHoaDon" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SanPham">
-              <PropertyRef Name="MaSP" />
-            </Principal>
-            <Dependent Role="ChiTietHoaDon">
-              <PropertyRef Name="MaSP" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ChiTietSanPham_NhomSanPham">
-          <End Role="NhomSanPham" Type="Self.NhomSanPham" Multiplicity="1" />
-          <End Role="ChiTietSanPham" Type="Self.ChiTietSanPham" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NhomSanPham">
-              <PropertyRef Name="MaNhom" />
-            </Principal>
-            <Dependent Role="ChiTietSanPham">
-              <PropertyRef Name="MaNhom" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ChiTietSanPham_SanPham">
           <End Role="SanPham" Type="Self.SanPham" Multiplicity="1" />
-          <End Role="ChiTietSanPham" Type="Self.ChiTietSanPham" Multiplicity="*" />
+          <End Role="ChiTietSanPham" Type="Self.ChiTietSanPham" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="SanPham">
               <PropertyRef Name="MaSP" />
             </Principal>
             <Dependent Role="ChiTietSanPham">
-              <PropertyRef Name="MaSp" />
+              <PropertyRef Name="MaSP" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -175,6 +161,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SanPham_NhomSanPham">
+          <End Role="NhomSanPham" Type="Self.NhomSanPham" Multiplicity="1" />
+          <End Role="SanPham" Type="Self.SanPham" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhomSanPham">
+              <PropertyRef Name="MaNhom" />
+            </Principal>
+            <Dependent Role="SanPham">
+              <PropertyRef Name="MaNhom" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ShopGiayOnlineModelStoreContainer">
           <EntitySet Name="Banner" EntityType="Self.Banner" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChiTietHoaDon" EntityType="Self.ChiTietHoaDon" Schema="dbo" store:Type="Tables" />
@@ -184,17 +182,13 @@
           <EntitySet Name="Menu" EntityType="Self.Menu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NhomSanPham" EntityType="Self.NhomSanPham" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SanPham" EntityType="Self.SanPham" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ChiTietHoaDon_ChiTietSanPham" Association="Self.FK_ChiTietHoaDon_ChiTietSanPham">
+            <End Role="ChiTietSanPham" EntitySet="ChiTietSanPham" />
+            <End Role="ChiTietHoaDon" EntitySet="ChiTietHoaDon" />
+          </AssociationSet>
           <AssociationSet Name="FK_ChiTietHoaDon_HoaDon" Association="Self.FK_ChiTietHoaDon_HoaDon">
             <End Role="HoaDon" EntitySet="HoaDon" />
             <End Role="ChiTietHoaDon" EntitySet="ChiTietHoaDon" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ChiTietHoaDon_SanPham" Association="Self.FK_ChiTietHoaDon_SanPham">
-            <End Role="SanPham" EntitySet="SanPham" />
-            <End Role="ChiTietHoaDon" EntitySet="ChiTietHoaDon" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ChiTietSanPham_NhomSanPham" Association="Self.FK_ChiTietSanPham_NhomSanPham">
-            <End Role="NhomSanPham" EntitySet="NhomSanPham" />
-            <End Role="ChiTietSanPham" EntitySet="ChiTietSanPham" />
           </AssociationSet>
           <AssociationSet Name="FK_ChiTietSanPham_SanPham" Association="Self.FK_ChiTietSanPham_SanPham">
             <End Role="SanPham" EntitySet="SanPham" />
@@ -203,6 +197,10 @@
           <AssociationSet Name="FK_HoaDon_Customer" Association="Self.FK_HoaDon_Customer">
             <End Role="Customer" EntitySet="Customer" />
             <End Role="HoaDon" EntitySet="HoaDon" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SanPham_NhomSanPham" Association="Self.FK_SanPham_NhomSanPham">
+            <End Role="NhomSanPham" EntitySet="NhomSanPham" />
+            <End Role="SanPham" EntitySet="SanPham" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -215,7 +213,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Link" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Meta" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Hide" Type="Boolean" />
@@ -225,7 +223,6 @@
         <EntityType Name="ChiTietHoaDon">
           <Key>
             <PropertyRef Name="MaHD" />
-            <PropertyRef Name="MaSP" />
           </Key>
           <Property Name="MaHD" Type="Int32" Nullable="false" />
           <Property Name="MaSP" Type="Int32" Nullable="false" />
@@ -236,23 +233,21 @@
           <Property Name="Hide" Type="Int32" />
           <Property Name="Order" Type="Int32" />
           <Property Name="DateBegin" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="ChiTietSanPham" Relationship="Self.FK_ChiTietHoaDon_ChiTietSanPham" FromRole="ChiTietHoaDon" ToRole="ChiTietSanPham" />
           <NavigationProperty Name="HoaDon" Relationship="Self.FK_ChiTietHoaDon_HoaDon" FromRole="ChiTietHoaDon" ToRole="HoaDon" />
-          <NavigationProperty Name="SanPham" Relationship="Self.FK_ChiTietHoaDon_SanPham" FromRole="ChiTietHoaDon" ToRole="SanPham" />
         </EntityType>
         <EntityType Name="ChiTietSanPham">
           <Key>
-            <PropertyRef Name="MaSp" />
-            <PropertyRef Name="MaNhom" />
+            <PropertyRef Name="MaSP" />
           </Key>
-          <Property Name="MaSp" Type="Int32" Nullable="false" />
-          <Property Name="MaNhom" Type="Int32" Nullable="false" />
+          <Property Name="MaSP" Type="Int32" Nullable="false" />
           <Property Name="Mau" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Size" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Meta" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Hide" Type="Boolean" />
           <Property Name="Order" Type="Int32" />
           <Property Name="DateBegin" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="NhomSanPham" Relationship="Self.FK_ChiTietSanPham_NhomSanPham" FromRole="ChiTietSanPham" ToRole="NhomSanPham" />
+          <NavigationProperty Name="ChiTietHoaDons" Relationship="Self.FK_ChiTietHoaDon_ChiTietSanPham" FromRole="ChiTietSanPham" ToRole="ChiTietHoaDon" />
           <NavigationProperty Name="SanPham" Relationship="Self.FK_ChiTietSanPham_SanPham" FromRole="ChiTietSanPham" ToRole="SanPham" />
         </EntityType>
         <EntityType Name="Customer">
@@ -281,7 +276,7 @@
           <Property Name="Hide" Type="Boolean" />
           <Property Name="Order" Type="Int32" />
           <Property Name="DateBegin" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="ChiTietHoaDons" Relationship="Self.FK_ChiTietHoaDon_HoaDon" FromRole="HoaDon" ToRole="ChiTietHoaDon" />
+          <NavigationProperty Name="ChiTietHoaDon" Relationship="Self.FK_ChiTietHoaDon_HoaDon" FromRole="HoaDon" ToRole="ChiTietHoaDon" />
           <NavigationProperty Name="Customer" Relationship="Self.FK_HoaDon_Customer" FromRole="HoaDon" ToRole="Customer" />
         </EntityType>
         <EntityType Name="Menu">
@@ -306,17 +301,18 @@
           <Property Name="Hide" Type="Boolean" />
           <Property Name="Order" Type="Int32" />
           <Property Name="DateBegin" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="ChiTietSanPhams" Relationship="Self.FK_ChiTietSanPham_NhomSanPham" FromRole="NhomSanPham" ToRole="ChiTietSanPham" />
+          <NavigationProperty Name="SanPhams" Relationship="Self.FK_SanPham_NhomSanPham" FromRole="NhomSanPham" ToRole="SanPham" />
         </EntityType>
         <EntityType Name="SanPham">
           <Key>
             <PropertyRef Name="MaSP" />
           </Key>
           <Property Name="MaSP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaNhom" Type="Int32" Nullable="false" />
           <Property Name="TenSP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Gia" Type="Int32" />
           <Property Name="MoTa" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Img" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Img" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="SoLuongTon" Type="Int32" />
           <Property Name="LuotXem" Type="Int32" />
           <Property Name="LuotBinhChon" Type="Int32" />
@@ -327,12 +323,24 @@
           <Property Name="Hide" Type="Boolean" />
           <Property Name="Order" Type="Int32" />
           <Property Name="DateBegin" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="ChiTietHoaDons" Relationship="Self.FK_ChiTietHoaDon_SanPham" FromRole="SanPham" ToRole="ChiTietHoaDon" />
-          <NavigationProperty Name="ChiTietSanPhams" Relationship="Self.FK_ChiTietSanPham_SanPham" FromRole="SanPham" ToRole="ChiTietSanPham" />
+          <NavigationProperty Name="ChiTietSanPham" Relationship="Self.FK_ChiTietSanPham_SanPham" FromRole="SanPham" ToRole="ChiTietSanPham" />
+          <NavigationProperty Name="NhomSanPham" Relationship="Self.FK_SanPham_NhomSanPham" FromRole="SanPham" ToRole="NhomSanPham" />
         </EntityType>
+        <Association Name="FK_ChiTietHoaDon_ChiTietSanPham">
+          <End Role="ChiTietSanPham" Type="Self.ChiTietSanPham" Multiplicity="1" />
+          <End Role="ChiTietHoaDon" Type="Self.ChiTietHoaDon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ChiTietSanPham">
+              <PropertyRef Name="MaSP" />
+            </Principal>
+            <Dependent Role="ChiTietHoaDon">
+              <PropertyRef Name="MaSP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ChiTietHoaDon_HoaDon">
           <End Role="HoaDon" Type="Self.HoaDon" Multiplicity="1" />
-          <End Role="ChiTietHoaDon" Type="Self.ChiTietHoaDon" Multiplicity="*" />
+          <End Role="ChiTietHoaDon" Type="Self.ChiTietHoaDon" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="HoaDon">
               <PropertyRef Name="MaHD" />
@@ -342,39 +350,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ChiTietHoaDon_SanPham">
-          <End Role="SanPham" Type="Self.SanPham" Multiplicity="1" />
-          <End Role="ChiTietHoaDon" Type="Self.ChiTietHoaDon" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SanPham">
-              <PropertyRef Name="MaSP" />
-            </Principal>
-            <Dependent Role="ChiTietHoaDon">
-              <PropertyRef Name="MaSP" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ChiTietSanPham_NhomSanPham">
-          <End Role="NhomSanPham" Type="Self.NhomSanPham" Multiplicity="1" />
-          <End Role="ChiTietSanPham" Type="Self.ChiTietSanPham" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NhomSanPham">
-              <PropertyRef Name="MaNhom" />
-            </Principal>
-            <Dependent Role="ChiTietSanPham">
-              <PropertyRef Name="MaNhom" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ChiTietSanPham_SanPham">
           <End Role="SanPham" Type="Self.SanPham" Multiplicity="1" />
-          <End Role="ChiTietSanPham" Type="Self.ChiTietSanPham" Multiplicity="*" />
+          <End Role="ChiTietSanPham" Type="Self.ChiTietSanPham" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="SanPham">
               <PropertyRef Name="MaSP" />
             </Principal>
             <Dependent Role="ChiTietSanPham">
-              <PropertyRef Name="MaSp" />
+              <PropertyRef Name="MaSP" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -390,6 +374,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SanPham_NhomSanPham">
+          <End Role="NhomSanPham" Type="Self.NhomSanPham" Multiplicity="1" />
+          <End Role="SanPham" Type="Self.SanPham" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhomSanPham">
+              <PropertyRef Name="MaNhom" />
+            </Principal>
+            <Dependent Role="SanPham">
+              <PropertyRef Name="MaNhom" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ShopGiayOnlineEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Banners" EntityType="Self.Banner" />
           <EntitySet Name="ChiTietHoaDons" EntityType="Self.ChiTietHoaDon" />
@@ -399,17 +395,13 @@
           <EntitySet Name="Menus" EntityType="Self.Menu" />
           <EntitySet Name="NhomSanPhams" EntityType="Self.NhomSanPham" />
           <EntitySet Name="SanPhams" EntityType="Self.SanPham" />
+          <AssociationSet Name="FK_ChiTietHoaDon_ChiTietSanPham" Association="Self.FK_ChiTietHoaDon_ChiTietSanPham">
+            <End Role="ChiTietSanPham" EntitySet="ChiTietSanPhams" />
+            <End Role="ChiTietHoaDon" EntitySet="ChiTietHoaDons" />
+          </AssociationSet>
           <AssociationSet Name="FK_ChiTietHoaDon_HoaDon" Association="Self.FK_ChiTietHoaDon_HoaDon">
             <End Role="HoaDon" EntitySet="HoaDons" />
             <End Role="ChiTietHoaDon" EntitySet="ChiTietHoaDons" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ChiTietHoaDon_SanPham" Association="Self.FK_ChiTietHoaDon_SanPham">
-            <End Role="SanPham" EntitySet="SanPhams" />
-            <End Role="ChiTietHoaDon" EntitySet="ChiTietHoaDons" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ChiTietSanPham_NhomSanPham" Association="Self.FK_ChiTietSanPham_NhomSanPham">
-            <End Role="NhomSanPham" EntitySet="NhomSanPhams" />
-            <End Role="ChiTietSanPham" EntitySet="ChiTietSanPhams" />
           </AssociationSet>
           <AssociationSet Name="FK_ChiTietSanPham_SanPham" Association="Self.FK_ChiTietSanPham_SanPham">
             <End Role="SanPham" EntitySet="SanPhams" />
@@ -418,6 +410,10 @@
           <AssociationSet Name="FK_HoaDon_Customer" Association="Self.FK_HoaDon_Customer">
             <End Role="Customer" EntitySet="Customers" />
             <End Role="HoaDon" EntitySet="HoaDons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SanPham_NhomSanPham" Association="Self.FK_SanPham_NhomSanPham">
+            <End Role="NhomSanPham" EntitySet="NhomSanPhams" />
+            <End Role="SanPham" EntitySet="SanPhams" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -457,8 +453,7 @@
           <EntitySetMapping Name="ChiTietSanPhams">
             <EntityTypeMapping TypeName="ShopGiayOnlineModel.ChiTietSanPham">
               <MappingFragment StoreEntitySet="ChiTietSanPham">
-                <ScalarProperty Name="MaSp" ColumnName="MaSp" />
-                <ScalarProperty Name="MaNhom" ColumnName="MaNhom" />
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
                 <ScalarProperty Name="Mau" ColumnName="Mau" />
                 <ScalarProperty Name="Size" ColumnName="Size" />
                 <ScalarProperty Name="Meta" ColumnName="Meta" />
@@ -525,6 +520,7 @@
             <EntityTypeMapping TypeName="ShopGiayOnlineModel.SanPham">
               <MappingFragment StoreEntitySet="SanPham">
                 <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="MaNhom" ColumnName="MaNhom" />
                 <ScalarProperty Name="TenSP" ColumnName="TenSP" />
                 <ScalarProperty Name="Gia" ColumnName="Gia" />
                 <ScalarProperty Name="MoTa" ColumnName="MoTa" />

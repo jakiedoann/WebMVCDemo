@@ -14,12 +14,6 @@ namespace WebMVCDemo.Models
     
     public partial class HoaDon
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public HoaDon()
-        {
-            this.ChiTietHoaDons = new HashSet<ChiTietHoaDon>();
-        }
-    
         public int MaHD { get; set; }
         public Nullable<System.DateTime> NgayDatHang { get; set; }
         public Nullable<int> TongTien { get; set; }
@@ -29,8 +23,7 @@ namespace WebMVCDemo.Models
         public Nullable<int> Order { get; set; }
         public Nullable<System.DateTime> DateBegin { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ChiTietHoaDon> ChiTietHoaDons { get; set; }
+        public virtual ChiTietHoaDon ChiTietHoaDon { get; set; }
         public virtual Customer Customer { get; set; }
     }
 }

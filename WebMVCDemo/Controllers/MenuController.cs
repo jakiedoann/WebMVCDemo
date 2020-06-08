@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Configuration;
 using System.Web.Mvc;
 using WebMVCDemo.Models;
 
@@ -17,8 +16,9 @@ namespace WebMVCDemo.Controllers
             return View();
         }
 
-        public ActionResult getMenu()
+        public ActionResult getMenu(string metatitle)
         {
+            ViewBag.meta = metatitle;
             var v = from t in db.Menus
                     where t.Hide == false
                     orderby t.Order ascending

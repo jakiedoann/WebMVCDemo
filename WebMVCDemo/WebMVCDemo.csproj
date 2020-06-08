@@ -54,6 +54,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -129,8 +130,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BannerController.cs" />
+    <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -192,6 +195,7 @@
     <Content Include="Content\images\1.png" />
     <Content Include="Content\images\2.png" />
     <Content Include="Content\images\ab_pic.jpg" />
+    <Content Include="Content\images\Adidas.jpg" />
     <Content Include="Content\images\arrow.png" />
     <Content Include="Content\images\b1.jpg" />
     <Content Include="Content\images\b2.jpg" />
@@ -208,6 +212,7 @@
     <Content Include="Content\images\banner5.jpg" />
     <Content Include="Content\images\bb1.jpg" />
     <Content Include="Content\images\bb2.jpg" />
+    <Content Include="Content\images\Bitis.jpg" />
     <Content Include="Content\images\bottom1.jpg" />
     <Content Include="Content\images\bottom2.jpg" />
     <Content Include="Content\images\bottom3.jpg" />
@@ -224,6 +229,7 @@
     <Content Include="Content\images\d3.jpg" />
     <Content Include="Content\images\inner1.jpg" />
     <Content Include="Content\images\inner2.jpg" />
+    <Content Include="Content\images\logo1.png" />
     <Content Include="Content\images\log_pic.jpg" />
     <Content Include="Content\images\m1.jpg" />
     <Content Include="Content\images\m2.jpg" />
@@ -235,6 +241,21 @@
     <Content Include="Content\images\m8.jpg" />
     <Content Include="Content\images\mark1.png" />
     <Content Include="Content\images\mid.jpg" />
+    <Content Include="Content\images\M_AdidasHoopsMid2-0.jpg" />
+    <Content Include="Content\images\M_BalenciagaTriple-S.jpg" />
+    <Content Include="Content\images\M_BitisHunterCore.jpg" />
+    <Content Include="Content\images\M_BitisHunterX2K18.jpg" />
+    <Content Include="Content\images\M_BitisHunterXBKL.jpg" />
+    <Content Include="Content\images\M_ConverseERX260MID.jpg" />
+    <Content Include="Content\images\M_JordanMaxAura.jpg" />
+    <Content Include="Content\images\M_NewBalance997S.jpeg" />
+    <Content Include="Content\images\M_NikeAirMax2090.jpg" />
+    <Content Include="Content\images\M_NikeTanjun.jpg" />
+    <Content Include="Content\images\M_PaperPlanes1101JamaicanFlag.jpg" />
+    <Content Include="Content\images\M_VansOldSkoolPro.jpg" />
+    <Content Include="Content\images\NewBalance.jpg" />
+    <Content Include="Content\images\Nike.jpg" />
+    <Content Include="Content\images\PhanLoai.jpg" />
     <Content Include="Content\images\s1.jpg" />
     <Content Include="Content\images\s2.jpg" />
     <Content Include="Content\images\s3.jpg" />
@@ -253,6 +274,7 @@
     <Content Include="Content\images\top1.jpg" />
     <Content Include="Content\images\top2.jpg" />
     <Content Include="Content\images\up_arrow.png" />
+    <Content Include="Content\images\Vans.jpg" />
     <Content Include="Content\images\w1.jpg" />
     <Content Include="Content\images\w2.jpg" />
     <Content Include="Content\images\w3.jpg" />
@@ -261,14 +283,22 @@
     <Content Include="Content\images\w6.jpg" />
     <Content Include="Content\images\w7.jpg" />
     <Content Include="Content\images\w8.jpg" />
+    <Content Include="Content\images\W_AdidasGazelleAthletic.jpg" />
+    <Content Include="Content\images\W_BalenciagaTripleS.jpg" />
+    <Content Include="Content\images\W_BitisHunterCore.jpg" />
+    <Content Include="Content\images\W_ConverseChuckTaylor.jpg" />
+    <Content Include="Content\images\W_ConverseChuckTaylorAllStarDenimFloral.jpg" />
+    <Content Include="Content\images\W_FreshFoamRoav.jpg" />
+    <Content Include="Content\images\W_NikeRosheG.jpg" />
+    <Content Include="Content\images\W_VansUaOldSkool.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Models\DataContext.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DataContext.Context.cs</LastGenOutput>
       <DependentUpon>DataContext.edmx</DependentUpon>
+      <LastGenOutput>DataContext.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\DataContext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -277,13 +307,6 @@
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\DataContext.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DataContext.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\DataContext.edmx.diagram">
-      <DependentUpon>DataContext.edmx</DependentUpon>
-    </Content>
     <Content Include="Content\fonts\fontawesome-webfont.eot" />
     <Content Include="Content\fonts\fontawesome-webfont.ttf" />
     <Content Include="Content\fonts\fontawesome-webfont.woff" />
@@ -293,6 +316,13 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <EntityDeploy Include="Models\DataContext.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DataContext.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\DataContext.edmx.diagram">
+      <DependentUpon>DataContext.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -312,6 +342,8 @@
     <Content Include="Scripts\js\jquery.easing.min.js" />
     <Content Include="Scripts\js\jquery.flexslider.js" />
     <Content Include="Scripts\js\jquery.waypoints.min.js" />
+    <Content Include="Scripts\js\load-more-button.js" />
+    <Content Include="Scripts\js\minicart.js" />
     <Content Include="Scripts\js\minicart.min.js" />
     <Content Include="Scripts\js\modernizr.custom.js" />
     <Content Include="Scripts\js\move-top.js" />
@@ -328,13 +360,16 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\MyLayout.cshtml" />
     <Content Include="Views\Default\Index.cshtml" />
-    <Content Include="Views\Menu\getMenu.cshtml" />
     <Content Include="Views\Banner\getBanner.cshtml" />
+    <Content Include="Views\Menu\getMenu.cshtml" />
+    <Content Include="Views\Default\getCategory.cshtml" />
+    <Content Include="Views\Default\getProduct.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\Detail.cshtml" />
+    <Content Include="Views\Contact\Contact.cshtml" />
+    <Content Include="Views\Product\getProductOfCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
