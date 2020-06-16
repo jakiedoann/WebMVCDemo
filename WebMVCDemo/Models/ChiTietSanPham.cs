@@ -17,9 +17,10 @@ namespace WebMVCDemo.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ChiTietSanPham()
         {
-            this.ChiTietHoaDons = new HashSet<ChiTietHoaDon>();
+            this.ChiTietDonHangs = new HashSet<ChiTietDonHang>();
         }
     
+        public int MaCTSP { get; set; }
         public int MaSP { get; set; }
         public string Mau { get; set; }
         public string Size { get; set; }
@@ -29,7 +30,7 @@ namespace WebMVCDemo.Models
         public Nullable<System.DateTime> DateBegin { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ChiTietHoaDon> ChiTietHoaDons { get; set; }
+        public virtual ICollection<ChiTietDonHang> ChiTietDonHangs { get; set; }
         public virtual SanPham SanPham { get; set; }
     }
 }

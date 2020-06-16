@@ -17,24 +17,24 @@
           <Property Name="Order" Type="int" />
           <Property Name="DateBegin" Type="smalldatetime" />
         </EntityType>
-        <EntityType Name="ChiTietHoaDon">
+        <EntityType Name="ChiTietDonHang">
           <Key>
             <PropertyRef Name="MaHD" />
+            <PropertyRef Name="MaCTSP" />
           </Key>
           <Property Name="MaHD" Type="int" Nullable="false" />
-          <Property Name="MaSP" Type="int" Nullable="false" />
+          <Property Name="MaCTSP" Type="int" Nullable="false" />
           <Property Name="SoLuong" Type="int" />
-          <Property Name="DonGia" Type="int" />
-          <Property Name="ThanhTien" Type="int" />
           <Property Name="Meta" Type="nvarchar" MaxLength="50" />
-          <Property Name="Hide" Type="int" />
+          <Property Name="Hide" Type="bit" />
           <Property Name="Order" Type="int" />
           <Property Name="DateBegin" Type="smalldatetime" />
         </EntityType>
         <EntityType Name="ChiTietSanPham">
           <Key>
-            <PropertyRef Name="MaSP" />
+            <PropertyRef Name="MaCTSP" />
           </Key>
+          <Property Name="MaCTSP" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MaSP" Type="int" Nullable="false" />
           <Property Name="Mau" Type="nvarchar" MaxLength="50" />
           <Property Name="Size" Type="varchar" MaxLength="10" />
@@ -56,7 +56,7 @@
           <Property Name="Order" Type="int" />
           <Property Name="DateBegin" Type="smalldatetime" />
         </EntityType>
-        <EntityType Name="HoaDon">
+        <EntityType Name="DonHang">
           <Key>
             <PropertyRef Name="MaHD" />
           </Key>
@@ -64,10 +64,18 @@
           <Property Name="NgayDatHang" Type="smalldatetime" />
           <Property Name="TongTien" Type="int" />
           <Property Name="MaKH" Type="int" />
+          <Property Name="TrangThai" Type="bit" />
           <Property Name="Meta" Type="nvarchar" MaxLength="50" />
           <Property Name="Hide" Type="bit" />
           <Property Name="Order" Type="int" />
           <Property Name="DateBegin" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="LoginAdmin">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Menu">
           <Key>
@@ -100,46 +108,41 @@
           <Property Name="MaNhom" Type="int" Nullable="false" />
           <Property Name="TenSP" Type="nvarchar" MaxLength="50" />
           <Property Name="Gia" Type="int" />
-          <Property Name="MoTa" Type="nvarchar" MaxLength="500" />
+          <Property Name="MoTa" Type="nvarchar(max)" />
           <Property Name="Img" Type="varchar(max)" />
-          <Property Name="SoLuongTon" Type="int" />
-          <Property Name="LuotXem" Type="int" />
-          <Property Name="LuotBinhChon" Type="int" />
-          <Property Name="LuotBinhLuan" Type="int" />
-          <Property Name="SoLanMua" Type="int" />
           <Property Name="Moi" Type="bit" />
           <Property Name="Meta" Type="nvarchar" MaxLength="50" />
           <Property Name="Hide" Type="bit" />
           <Property Name="Order" Type="int" />
           <Property Name="DateBegin" Type="smalldatetime" />
         </EntityType>
-        <Association Name="FK_ChiTietHoaDon_ChiTietSanPham">
-          <End Role="ChiTietSanPham" Type="Self.ChiTietSanPham" Multiplicity="1" />
-          <End Role="ChiTietHoaDon" Type="Self.ChiTietHoaDon" Multiplicity="*" />
+        <Association Name="FK_ChiTietDonHang_ChiTietSanPham">
+          <End Role="ChiTietSanPham" Type="Self.ChiTietSanPham" Multiplicity="0..1" />
+          <End Role="ChiTietDonHang" Type="Self.ChiTietDonHang" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ChiTietSanPham">
-              <PropertyRef Name="MaSP" />
+              <PropertyRef Name="MaCTSP" />
             </Principal>
-            <Dependent Role="ChiTietHoaDon">
-              <PropertyRef Name="MaSP" />
+            <Dependent Role="ChiTietDonHang">
+              <PropertyRef Name="SoLuong" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ChiTietHoaDon_HoaDon">
-          <End Role="HoaDon" Type="Self.HoaDon" Multiplicity="1" />
-          <End Role="ChiTietHoaDon" Type="Self.ChiTietHoaDon" Multiplicity="0..1" />
+          <End Role="DonHang" Type="Self.DonHang" Multiplicity="1" />
+          <End Role="ChiTietDonHang" Type="Self.ChiTietDonHang" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="HoaDon">
+            <Principal Role="DonHang">
               <PropertyRef Name="MaHD" />
             </Principal>
-            <Dependent Role="ChiTietHoaDon">
+            <Dependent Role="ChiTietDonHang">
               <PropertyRef Name="MaHD" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ChiTietSanPham_SanPham">
           <End Role="SanPham" Type="Self.SanPham" Multiplicity="1" />
-          <End Role="ChiTietSanPham" Type="Self.ChiTietSanPham" Multiplicity="0..1" />
+          <End Role="ChiTietSanPham" Type="Self.ChiTietSanPham" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SanPham">
               <PropertyRef Name="MaSP" />
@@ -151,12 +154,12 @@
         </Association>
         <Association Name="FK_HoaDon_Customer">
           <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
-          <End Role="HoaDon" Type="Self.HoaDon" Multiplicity="*" />
+          <End Role="DonHang" Type="Self.DonHang" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
               <PropertyRef Name="MaKH" />
             </Principal>
-            <Dependent Role="HoaDon">
+            <Dependent Role="DonHang">
               <PropertyRef Name="MaKH" />
             </Dependent>
           </ReferentialConstraint>
@@ -175,20 +178,21 @@
         </Association>
         <EntityContainer Name="ShopGiayOnlineModelStoreContainer">
           <EntitySet Name="Banner" EntityType="Self.Banner" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ChiTietHoaDon" EntityType="Self.ChiTietHoaDon" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ChiTietDonHang" EntityType="Self.ChiTietDonHang" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChiTietSanPham" EntityType="Self.ChiTietSanPham" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="HoaDon" EntityType="Self.HoaDon" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DonHang" EntityType="Self.DonHang" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoginAdmin" EntityType="Self.LoginAdmin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Menu" EntityType="Self.Menu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NhomSanPham" EntityType="Self.NhomSanPham" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SanPham" EntityType="Self.SanPham" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_ChiTietHoaDon_ChiTietSanPham" Association="Self.FK_ChiTietHoaDon_ChiTietSanPham">
+          <AssociationSet Name="FK_ChiTietDonHang_ChiTietSanPham" Association="Self.FK_ChiTietDonHang_ChiTietSanPham">
             <End Role="ChiTietSanPham" EntitySet="ChiTietSanPham" />
-            <End Role="ChiTietHoaDon" EntitySet="ChiTietHoaDon" />
+            <End Role="ChiTietDonHang" EntitySet="ChiTietDonHang" />
           </AssociationSet>
           <AssociationSet Name="FK_ChiTietHoaDon_HoaDon" Association="Self.FK_ChiTietHoaDon_HoaDon">
-            <End Role="HoaDon" EntitySet="HoaDon" />
-            <End Role="ChiTietHoaDon" EntitySet="ChiTietHoaDon" />
+            <End Role="DonHang" EntitySet="DonHang" />
+            <End Role="ChiTietDonHang" EntitySet="ChiTietDonHang" />
           </AssociationSet>
           <AssociationSet Name="FK_ChiTietSanPham_SanPham" Association="Self.FK_ChiTietSanPham_SanPham">
             <End Role="SanPham" EntitySet="SanPham" />
@@ -196,7 +200,7 @@
           </AssociationSet>
           <AssociationSet Name="FK_HoaDon_Customer" Association="Self.FK_HoaDon_Customer">
             <End Role="Customer" EntitySet="Customer" />
-            <End Role="HoaDon" EntitySet="HoaDon" />
+            <End Role="DonHang" EntitySet="DonHang" />
           </AssociationSet>
           <AssociationSet Name="FK_SanPham_NhomSanPham" Association="Self.FK_SanPham_NhomSanPham">
             <End Role="NhomSanPham" EntitySet="NhomSanPham" />
@@ -220,26 +224,26 @@
           <Property Name="Order" Type="Int32" />
           <Property Name="DateBegin" Type="DateTime" Precision="0" />
         </EntityType>
-        <EntityType Name="ChiTietHoaDon">
+        <EntityType Name="ChiTietDonHang">
           <Key>
             <PropertyRef Name="MaHD" />
+            <PropertyRef Name="MaCTSP" />
           </Key>
           <Property Name="MaHD" Type="Int32" Nullable="false" />
-          <Property Name="MaSP" Type="Int32" Nullable="false" />
+          <Property Name="MaCTSP" Type="Int32" Nullable="false" />
           <Property Name="SoLuong" Type="Int32" />
-          <Property Name="DonGia" Type="Int32" />
-          <Property Name="ThanhTien" Type="Int32" />
           <Property Name="Meta" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Hide" Type="Int32" />
+          <Property Name="Hide" Type="Boolean" />
           <Property Name="Order" Type="Int32" />
           <Property Name="DateBegin" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="ChiTietSanPham" Relationship="Self.FK_ChiTietHoaDon_ChiTietSanPham" FromRole="ChiTietHoaDon" ToRole="ChiTietSanPham" />
-          <NavigationProperty Name="HoaDon" Relationship="Self.FK_ChiTietHoaDon_HoaDon" FromRole="ChiTietHoaDon" ToRole="HoaDon" />
+          <NavigationProperty Name="ChiTietSanPham" Relationship="Self.FK_ChiTietDonHang_ChiTietSanPham" FromRole="ChiTietDonHang" ToRole="ChiTietSanPham" />
+          <NavigationProperty Name="DonHang" Relationship="Self.FK_ChiTietHoaDon_HoaDon" FromRole="ChiTietDonHang" ToRole="DonHang" />
         </EntityType>
         <EntityType Name="ChiTietSanPham">
           <Key>
-            <PropertyRef Name="MaSP" />
+            <PropertyRef Name="MaCTSP" />
           </Key>
+          <Property Name="MaCTSP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MaSP" Type="Int32" Nullable="false" />
           <Property Name="Mau" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Size" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
@@ -247,7 +251,7 @@
           <Property Name="Hide" Type="Boolean" />
           <Property Name="Order" Type="Int32" />
           <Property Name="DateBegin" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="ChiTietHoaDons" Relationship="Self.FK_ChiTietHoaDon_ChiTietSanPham" FromRole="ChiTietSanPham" ToRole="ChiTietHoaDon" />
+          <NavigationProperty Name="ChiTietDonHangs" Relationship="Self.FK_ChiTietDonHang_ChiTietSanPham" FromRole="ChiTietSanPham" ToRole="ChiTietDonHang" />
           <NavigationProperty Name="SanPham" Relationship="Self.FK_ChiTietSanPham_SanPham" FromRole="ChiTietSanPham" ToRole="SanPham" />
         </EntityType>
         <EntityType Name="Customer">
@@ -262,9 +266,9 @@
           <Property Name="Hide" Type="Boolean" />
           <Property Name="Order" Type="Int32" />
           <Property Name="DateBegin" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="HoaDons" Relationship="Self.FK_HoaDon_Customer" FromRole="Customer" ToRole="HoaDon" />
+          <NavigationProperty Name="DonHangs" Relationship="Self.FK_HoaDon_Customer" FromRole="Customer" ToRole="DonHang" />
         </EntityType>
-        <EntityType Name="HoaDon">
+        <EntityType Name="DonHang">
           <Key>
             <PropertyRef Name="MaHD" />
           </Key>
@@ -272,12 +276,20 @@
           <Property Name="NgayDatHang" Type="DateTime" Precision="0" />
           <Property Name="TongTien" Type="Int32" />
           <Property Name="MaKH" Type="Int32" />
+          <Property Name="TrangThai" Type="Boolean" />
           <Property Name="Meta" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Hide" Type="Boolean" />
           <Property Name="Order" Type="Int32" />
           <Property Name="DateBegin" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="ChiTietHoaDon" Relationship="Self.FK_ChiTietHoaDon_HoaDon" FromRole="HoaDon" ToRole="ChiTietHoaDon" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK_HoaDon_Customer" FromRole="HoaDon" ToRole="Customer" />
+          <NavigationProperty Name="ChiTietDonHangs" Relationship="Self.FK_ChiTietHoaDon_HoaDon" FromRole="DonHang" ToRole="ChiTietDonHang" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_HoaDon_Customer" FromRole="DonHang" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="LoginAdmin">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="Menu">
           <Key>
@@ -311,48 +323,43 @@
           <Property Name="MaNhom" Type="Int32" Nullable="false" />
           <Property Name="TenSP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Gia" Type="Int32" />
-          <Property Name="MoTa" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MoTa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Img" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="SoLuongTon" Type="Int32" />
-          <Property Name="LuotXem" Type="Int32" />
-          <Property Name="LuotBinhChon" Type="Int32" />
-          <Property Name="LuotBinhLuan" Type="Int32" />
-          <Property Name="SoLanMua" Type="Int32" />
           <Property Name="Moi" Type="Boolean" />
           <Property Name="Meta" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Hide" Type="Boolean" />
           <Property Name="Order" Type="Int32" />
           <Property Name="DateBegin" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="ChiTietSanPham" Relationship="Self.FK_ChiTietSanPham_SanPham" FromRole="SanPham" ToRole="ChiTietSanPham" />
+          <NavigationProperty Name="ChiTietSanPhams" Relationship="Self.FK_ChiTietSanPham_SanPham" FromRole="SanPham" ToRole="ChiTietSanPham" />
           <NavigationProperty Name="NhomSanPham" Relationship="Self.FK_SanPham_NhomSanPham" FromRole="SanPham" ToRole="NhomSanPham" />
         </EntityType>
-        <Association Name="FK_ChiTietHoaDon_ChiTietSanPham">
-          <End Role="ChiTietSanPham" Type="Self.ChiTietSanPham" Multiplicity="1" />
-          <End Role="ChiTietHoaDon" Type="Self.ChiTietHoaDon" Multiplicity="*" />
+        <Association Name="FK_ChiTietDonHang_ChiTietSanPham">
+          <End Role="ChiTietSanPham" Type="Self.ChiTietSanPham" Multiplicity="0..1" />
+          <End Role="ChiTietDonHang" Type="Self.ChiTietDonHang" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ChiTietSanPham">
-              <PropertyRef Name="MaSP" />
+              <PropertyRef Name="MaCTSP" />
             </Principal>
-            <Dependent Role="ChiTietHoaDon">
-              <PropertyRef Name="MaSP" />
+            <Dependent Role="ChiTietDonHang">
+              <PropertyRef Name="SoLuong" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ChiTietHoaDon_HoaDon">
-          <End Role="HoaDon" Type="Self.HoaDon" Multiplicity="1" />
-          <End Role="ChiTietHoaDon" Type="Self.ChiTietHoaDon" Multiplicity="0..1" />
+          <End Role="DonHang" Type="Self.DonHang" Multiplicity="1" />
+          <End Role="ChiTietDonHang" Type="Self.ChiTietDonHang" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="HoaDon">
+            <Principal Role="DonHang">
               <PropertyRef Name="MaHD" />
             </Principal>
-            <Dependent Role="ChiTietHoaDon">
+            <Dependent Role="ChiTietDonHang">
               <PropertyRef Name="MaHD" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ChiTietSanPham_SanPham">
           <End Role="SanPham" Type="Self.SanPham" Multiplicity="1" />
-          <End Role="ChiTietSanPham" Type="Self.ChiTietSanPham" Multiplicity="0..1" />
+          <End Role="ChiTietSanPham" Type="Self.ChiTietSanPham" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SanPham">
               <PropertyRef Name="MaSP" />
@@ -364,12 +371,12 @@
         </Association>
         <Association Name="FK_HoaDon_Customer">
           <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
-          <End Role="HoaDon" Type="Self.HoaDon" Multiplicity="*" />
+          <End Role="DonHang" Type="Self.DonHang" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
               <PropertyRef Name="MaKH" />
             </Principal>
-            <Dependent Role="HoaDon">
+            <Dependent Role="DonHang">
               <PropertyRef Name="MaKH" />
             </Dependent>
           </ReferentialConstraint>
@@ -388,20 +395,21 @@
         </Association>
         <EntityContainer Name="ShopGiayOnlineEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Banners" EntityType="Self.Banner" />
-          <EntitySet Name="ChiTietHoaDons" EntityType="Self.ChiTietHoaDon" />
+          <EntitySet Name="ChiTietDonHangs" EntityType="Self.ChiTietDonHang" />
           <EntitySet Name="ChiTietSanPhams" EntityType="Self.ChiTietSanPham" />
           <EntitySet Name="Customers" EntityType="Self.Customer" />
-          <EntitySet Name="HoaDons" EntityType="Self.HoaDon" />
+          <EntitySet Name="DonHangs" EntityType="Self.DonHang" />
+          <EntitySet Name="LoginAdmins" EntityType="Self.LoginAdmin" />
           <EntitySet Name="Menus" EntityType="Self.Menu" />
           <EntitySet Name="NhomSanPhams" EntityType="Self.NhomSanPham" />
           <EntitySet Name="SanPhams" EntityType="Self.SanPham" />
-          <AssociationSet Name="FK_ChiTietHoaDon_ChiTietSanPham" Association="Self.FK_ChiTietHoaDon_ChiTietSanPham">
+          <AssociationSet Name="FK_ChiTietDonHang_ChiTietSanPham" Association="Self.FK_ChiTietDonHang_ChiTietSanPham">
             <End Role="ChiTietSanPham" EntitySet="ChiTietSanPhams" />
-            <End Role="ChiTietHoaDon" EntitySet="ChiTietHoaDons" />
+            <End Role="ChiTietDonHang" EntitySet="ChiTietDonHangs" />
           </AssociationSet>
           <AssociationSet Name="FK_ChiTietHoaDon_HoaDon" Association="Self.FK_ChiTietHoaDon_HoaDon">
-            <End Role="HoaDon" EntitySet="HoaDons" />
-            <End Role="ChiTietHoaDon" EntitySet="ChiTietHoaDons" />
+            <End Role="DonHang" EntitySet="DonHangs" />
+            <End Role="ChiTietDonHang" EntitySet="ChiTietDonHangs" />
           </AssociationSet>
           <AssociationSet Name="FK_ChiTietSanPham_SanPham" Association="Self.FK_ChiTietSanPham_SanPham">
             <End Role="SanPham" EntitySet="SanPhams" />
@@ -409,7 +417,7 @@
           </AssociationSet>
           <AssociationSet Name="FK_HoaDon_Customer" Association="Self.FK_HoaDon_Customer">
             <End Role="Customer" EntitySet="Customers" />
-            <End Role="HoaDon" EntitySet="HoaDons" />
+            <End Role="DonHang" EntitySet="DonHangs" />
           </AssociationSet>
           <AssociationSet Name="FK_SanPham_NhomSanPham" Association="Self.FK_SanPham_NhomSanPham">
             <End Role="NhomSanPham" EntitySet="NhomSanPhams" />
@@ -435,14 +443,12 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ChiTietHoaDons">
-            <EntityTypeMapping TypeName="ShopGiayOnlineModel.ChiTietHoaDon">
-              <MappingFragment StoreEntitySet="ChiTietHoaDon">
+          <EntitySetMapping Name="ChiTietDonHangs">
+            <EntityTypeMapping TypeName="ShopGiayOnlineModel.ChiTietDonHang">
+              <MappingFragment StoreEntitySet="ChiTietDonHang">
                 <ScalarProperty Name="MaHD" ColumnName="MaHD" />
-                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="MaCTSP" ColumnName="MaCTSP" />
                 <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
-                <ScalarProperty Name="DonGia" ColumnName="DonGia" />
-                <ScalarProperty Name="ThanhTien" ColumnName="ThanhTien" />
                 <ScalarProperty Name="Meta" ColumnName="Meta" />
                 <ScalarProperty Name="Hide" ColumnName="Hide" />
                 <ScalarProperty Name="Order" ColumnName="Order" />
@@ -453,6 +459,7 @@
           <EntitySetMapping Name="ChiTietSanPhams">
             <EntityTypeMapping TypeName="ShopGiayOnlineModel.ChiTietSanPham">
               <MappingFragment StoreEntitySet="ChiTietSanPham">
+                <ScalarProperty Name="MaCTSP" ColumnName="MaCTSP" />
                 <ScalarProperty Name="MaSP" ColumnName="MaSP" />
                 <ScalarProperty Name="Mau" ColumnName="Mau" />
                 <ScalarProperty Name="Size" ColumnName="Size" />
@@ -477,17 +484,26 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="HoaDons">
-            <EntityTypeMapping TypeName="ShopGiayOnlineModel.HoaDon">
-              <MappingFragment StoreEntitySet="HoaDon">
+          <EntitySetMapping Name="DonHangs">
+            <EntityTypeMapping TypeName="ShopGiayOnlineModel.DonHang">
+              <MappingFragment StoreEntitySet="DonHang">
                 <ScalarProperty Name="MaHD" ColumnName="MaHD" />
                 <ScalarProperty Name="NgayDatHang" ColumnName="NgayDatHang" />
                 <ScalarProperty Name="TongTien" ColumnName="TongTien" />
                 <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
                 <ScalarProperty Name="Meta" ColumnName="Meta" />
                 <ScalarProperty Name="Hide" ColumnName="Hide" />
                 <ScalarProperty Name="Order" ColumnName="Order" />
                 <ScalarProperty Name="DateBegin" ColumnName="DateBegin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoginAdmins">
+            <EntityTypeMapping TypeName="ShopGiayOnlineModel.LoginAdmin">
+              <MappingFragment StoreEntitySet="LoginAdmin">
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -525,11 +541,6 @@
                 <ScalarProperty Name="Gia" ColumnName="Gia" />
                 <ScalarProperty Name="MoTa" ColumnName="MoTa" />
                 <ScalarProperty Name="Img" ColumnName="Img" />
-                <ScalarProperty Name="SoLuongTon" ColumnName="SoLuongTon" />
-                <ScalarProperty Name="LuotXem" ColumnName="LuotXem" />
-                <ScalarProperty Name="LuotBinhChon" ColumnName="LuotBinhChon" />
-                <ScalarProperty Name="LuotBinhLuan" ColumnName="LuotBinhLuan" />
-                <ScalarProperty Name="SoLanMua" ColumnName="SoLanMua" />
                 <ScalarProperty Name="Moi" ColumnName="Moi" />
                 <ScalarProperty Name="Meta" ColumnName="Meta" />
                 <ScalarProperty Name="Hide" ColumnName="Hide" />

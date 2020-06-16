@@ -22,21 +22,19 @@ namespace WebMVCDemo.Controllers
         public ActionResult Detail(int id)
         {
             ViewBag.meta = "san-pham";
-            var v = from t in db.SanPhams
+            var v = from t in db.ChiTietSanPhams
                     where t.MaSP == id
                     select t;
             return View(v.FirstOrDefault());
         }
 
-        public ActionResult getProductOfCategory(int id, string metatitle)
+        public ActionResult getSize(int id)
         {
-            ViewBag.meta = "san-pham";
-
-            var v = from t in db.SanPhams.Take(4)
-                    where t.MaNhom == id && t.Hide == false
+            var v = from t in db.ChiTietSanPhams
+                    where t.MaSP == id
                     select t;
             return PartialView(v.ToList());
-        }
 
+        }
     }
 }

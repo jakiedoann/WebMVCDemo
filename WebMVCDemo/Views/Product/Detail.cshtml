@@ -1,7 +1,7 @@
-﻿@model WebMVCDemo.Models.SanPham
+﻿@model WebMVCDemo.Models.ChiTietSanPham
 
 @{
-    ViewBag.Title = Model.TenSP;
+    ViewBag.Title = Model.SanPham.TenSP;
     Layout = "~/Views/Shared/MyLayout.cshtml";
 }
 
@@ -42,8 +42,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div class="agile_inner_breadcrumb">
                     <ul class="w3_short">
                         <li><a href="/trang-chu">Trang chủ</a><i>|</i></li>
-                        <li>@Model.NhomSanPham.TenNhom<i>|</i></li>
-                        <li>@Model.TenSP</li>
+                        <li>@Model.SanPham.NhomSanPham.TenNhom<i>|</i></li>
+                        <li>@Model.SanPham.TenSP</li>
                     </ul>
                 </div>
             </div>
@@ -58,23 +58,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div class="grid images_3_of_2">
                     <div class="flexslider">
                         <ul class="slides">
-                            <content data-thumb="~/Content/images/@Model.Img">
-                                <div class="thumb-image"> <img src="~/Content/images/@Model.Img" data-imagezoom="true" class="img-responsive"> </div>
+                            <content data-thumb="~/Content/images/@Model.SanPham.Img">
+                                <div class="thumb-image"> <img src="~/Content/images/@Model.SanPham.Img" data-imagezoom="true" class="img-responsive"> </div>
                             </content>
                             @*<li data-thumb="images/d1.jpg">
-                            <div class="thumb-image"> <img src="~/Content/images/d1.jpg" data-imagezoom="true" class="img-responsive"> </div>
-                        </li>
-                        <li data-thumb="images/d3.jpg">
-                            <div class="thumb-image"> <img src="~/Content/images/d3.jpg" data-imagezoom="true" class="img-responsive"> </div>
-                        </li>*@
+                                    <div class="thumb-image"> <img src="~/Content/images/d1.jpg" data-imagezoom="true" class="img-responsive"> </div>
+                                </li>
+                                <li data-thumb="images/d3.jpg">
+                                    <div class="thumb-image"> <img src="~/Content/images/d3.jpg" data-imagezoom="true" class="img-responsive"> </div>
+                                </li>*@
                         </ul>
                         <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
             <div class="col-md-8 single-right-left simpleCart_shelfItem">
-                <h3>@Model.TenSP</h3>
-                <p><span class="item_price">@Model.Gia</span><del>123s</del></p>
+                <h3>@Model.SanPham.TenSP</h3>
+                <p><span class="item_price">@Model.SanPham.Gia</span></p>
                 <div class="rating1">
                     <span class="starRating">
                         <input id="rating5" type="radio" name="rating" value="5">
@@ -89,23 +89,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <label for="rating1">1</label>
                     </span>
                 </div>
-                <div class="color-quality">
+                <div class="color-quality" style="display: flex">
                     <div class="color-quality-right">
                         <h5>Size :</h5>
                         <select id="country1" onchange="change_country(this.value)" class="frm-field required sect">
-                            <option value="null">40</option>
-                            <option value="null">41</option>
-                            <option value="null">42</option>
-                            <option value="null">43</option>
+                            @{ Html.RenderAction("getSize", "Product", new { id = @Model.MaSP });}
                         </select>
-                        <div class="color-quality-right">
-                            <h5>Màu :</h5>
-                            <select id="country1" onchange="change_country(this.value)" class="frm-field required sect">
-                                <option value="null">Đen</option>
-                                <option value="null">Đỏ</option>
-                                <option value="null">Trắng</option>
-                            </select>
-                        </div>
+                    </div>
+                    <div class="color-quality-right" style="margin-left: 25px">
+                        <h5>Màu :</h5>
+                        <select id="country1" onchange="change_country(this.value)" class="frm-field required sect">
+                            <option value="null">@Model.Mau</option>
+                        </select>
                     </div>
                 </div>
                 <div class="occasion-cart">
@@ -115,9 +110,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <input type="hidden" name="cmd" value="_cart">
                                 <input type="hidden" name="add" value="1">
                                 <input type="hidden" name="business" value=" ">
-                                <input type="hidden" name="@Model.TenSP" value="@Model.TenSP">
-                                <input type="hidden" name="@Model.Gia" value="@Model.Gia">
-                                <input type="hidden" name="discount_amount" value="1.00">
+                                <input type="hidden" name="item_name" value="@Model.SanPham.TenSP">
+                                <input type="hidden" name="amount" value="@Model.SanPham.Gia">
                                 <input type="hidden" name="currency_code" value="VND">
                                 <input type="hidden" name="return" value=" ">
                                 <input type="hidden" name="cancel_return" value=" ">
@@ -128,9 +122,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                 </div>
                 <ul class="social-nav model-3d-0 footer-social w3_agile_social single_page_w3ls">
-                    <li class="share">Share On : </li>
+                    <li class="share">Chia Sẻ : </li>
                     <li>
-                        <a href="http://www/facebook.com" class="facebook">
+                        <a href="http://www.facebook.com" class="facebook">
                             <div class="front"><i class="fa fa-facebook" aria-hidden="true"></i></div>
                             <div class="back"><i class="fa fa-facebook" aria-hidden="true"></i></div>
                         </a>
@@ -154,7 +148,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </a>
                     </li>
                 </ul>
-
             </div>
             <div class="clearfix"> </div>
             <!-- /new_arrivals -->
@@ -167,9 +160,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <!--/tab_one-->
                         <div class="tab">
                             <div class="single_page_agile_its_w3ls">
-                                <h6>Lorem ipsum dolor sit amet</h6>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elPellentesque vehicula augue eget nisl ullamcorper, molestie blandit ipsum auctor. Mauris volutpat augue dolor.Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut lab ore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco. labore et dolore magna aliqua.</p>
-                                <p class="w3ls_para">Lorem ipsum dolor sit amet, consectetur adipisicing elPellentesque vehicula augue eget nisl ullamcorper, molestie blandit ipsum auctor. Mauris volutpat augue dolor.Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut lab ore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco. labore et dolore magna aliqua.</p>
+                                <p class="w3ls_para">@Model.SanPham.MoTa</p>
                             </div>
                         </div>
                         <!--//tab_one-->
@@ -177,13 +168,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </div>
             </div>
             <!-- //new_arrivals -->
-
             @* Sản phẩm cùng danh mục *@
-            @{Html.RenderAction("getProductOfCategory", "Product", new { id = @Model.MaNhom, metatitle = @ViewBag.metatitle });}
+            <div class="w3_agile_latest_arrivals">
+                <h3 class="wthree_text_info">Sản phẩm cùng danh mục</h3>
+                @{Html.RenderAction("getProduct", "Default", new { id = @Model.SanPham.NhomSanPham.MaNhom, metatitle = @ViewBag.metatitle });}
+            </div>
             @* Sản phẩm cùng danh mục *@
 
         </div>
     </div>
+    }
+
     <!--//single_page-->
     <a href="#home" class="scroll" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
     <!-- js -->
@@ -191,7 +186,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <!-- //js -->
     <script src="~/Scripts/js/modernizr.custom.js"></script>
     <!-- Custom-JavaScript-File-Links -->
-
     <!-- single -->
     <script src="~/Scripts/js/imagezoom.js"></script>
     <!-- single -->

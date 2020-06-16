@@ -21,7 +21,7 @@ namespace WebMVCDemo
                 {
                     {"type", "trang-chu" }
                 },
-                new[] { "WebMVCDemo.Controllers" });
+                namespaces: new[] { "WebMVCDemo.Controllers" });
 
             //Màn hình liên hệ
             routes.MapRoute("Contact", "{type}/{meta}",
@@ -30,7 +30,7 @@ namespace WebMVCDemo
                 {
                     { "type","lien-he" }
                 },
-                new[] { "WebMVCDemo.Controllers" });
+                namespaces: new[] { "WebMVCDemo.Controllers" });
 
             //Lấy sản phẩm theo nhóm sản phẩm
             routes.MapRoute("Product", "{type}/{meta}",
@@ -39,7 +39,7 @@ namespace WebMVCDemo
                 {
                     {"type", "san-pham" }
                 },
-                new[] { "WebMVCDemo.Controllers" });
+                namespaces: new[] { "WebMVCDemo.Controllers" });
 
             //Lấy chi tiết sản phẩm
             routes.MapRoute("Detail", "{type}/{meta}/{id}",
@@ -48,13 +48,21 @@ namespace WebMVCDemo
                 {
                     {"type", "san-pham" }
                 },
-                new[] { "WebMVCDemo.Controllers" });
+                namespaces: new[] { "WebMVCDemo.Controllers" });
 
             //Màn hình chính
+            //routes.MapRoute(
+            //    name: "Default",
+            //    url: "{controller}/{action}/{id}",
+            //    defaults: new { controller = "Default", action = "Index", id = UrlParameter.Optional }
+            //);
+
+            //Admin
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Default", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Default", action = "Index", id = UrlParameter.Optional },
+                namespaces: new[] { "WebMVCDemo.Controllers" }
             );
         }
     }

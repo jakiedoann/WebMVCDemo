@@ -16,6 +16,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <link href="~/Content/css/font-awesome.css" rel="stylesheet">
     <link href="~/Content/css/easy-responsive-tabs.css" rel='stylesheet' type='text/css' />
     <link href="~/Content/bootstrap.min.css" />
+    <link href="~/Content/css/shop.css" />
+    <link href="~/Content/css/checkout.css" />
     <!-- //for bootstrap working -->
 
     <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800" rel="stylesheet">
@@ -47,7 +49,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <!-- header-bot -->
             <div class="col-md-4 logo_agile">
                 @*<img src="~/Content/images/logo1.png" style="width: 50%; height: 50%"/>*@
-                <h1><a href="/@ViewBag.meta"><span>LDT</span>Shoes </a></h1>
+                <h1><a href="/trang-chu"><span>LDT</span>Shoes </a></h1>
             </div>
             <!-- header-bot -->
             <div class="col-md-4 agileits-social top_content">
@@ -78,9 +80,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </a>
                     </li>
                 </ul>
-
-
-
             </div>
             <div class="clearfix"></div>
         </div>
@@ -103,6 +102,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </button>
                         </div>
                         <!-- Collect the nav links, forms, and other content for toggling -->
+
+
+                        <!--get menu-->
                         <div class="collapse navbar-collapse menu--shylock" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav menu__list">
                                 <li class="active menu__item menu__item--current">
@@ -122,13 +124,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="top_nav_right">
                 <div class="wthreecartaits wthreecartaits2 cart cart box_1">
                     <form action="#" method="post" class="last">
-                        <input type="hidden" name="cmd" value="_cart">
-                        <input type="hidden" name="display" value="1">
-                        @*<button class="w3view-cart" type="submit" name="submit" value=""><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>*@
-                        <button class="top_shoe_cart" type="submit" name="submit" value=""><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
-                        <a href="#" data-toggle="modal" data-target="#myModal1"></a>
+                        <input type="hidden" name="cmd" value="_cart" />
+                        <input type="hidden" name="display" value="1" />
+                        <button class="w3view-cart" type="submit" name="submit" value="">
+                            <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
+                        </button>
                     </form>
-
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -515,26 +516,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <!-- js -->
     <script type="text/javascript" src="~/Scripts/js/jquery-2.1.4.min.js"></script>
     <!-- //js -->
+
     <script src="~/Scripts/js/modernizr.custom.js"></script>
     <!-- Custom-JavaScript-File-Links -->
 
     <!-- cart-js -->
-    <script src="~/Scripts/js/minicart.js"></script>
+    <script src="~/Scripts/js/minicart.min.js"></script>
     <script>
-        shoe.render();
-
-        shoe.cart.on('shoe_checkout', function (evt) {
-            var items, len, i;
-
-            if (this.subtotal() > 0) {
-                items = this.items();
-
-                for (i = 0, len = items.length; i < len; i++) { }
-            }
+        // Mini Cart
+        paypal.minicart.render({
+            action: '#'
         });
+
+        if (~window.location.search.indexOf('reset=true')) {
+            paypal.minicart.reset();
+        }
     </script>
     <!-- //cart-js -->
-
     <!-- script for responsive tabs -->
     <script src="~/Scripts/js/easy-responsive-tabs.js"></script>
     <script>

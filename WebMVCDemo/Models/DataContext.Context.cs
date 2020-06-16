@@ -26,10 +26,11 @@ namespace WebMVCDemo.Models
         }
     
         public virtual DbSet<Banner> Banners { get; set; }
-        public virtual DbSet<ChiTietHoaDon> ChiTietHoaDons { get; set; }
+        public virtual DbSet<ChiTietDonHang> ChiTietDonHangs { get; set; }
         public virtual DbSet<ChiTietSanPham> ChiTietSanPhams { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
-        public virtual DbSet<HoaDon> HoaDons { get; set; }
+        public virtual DbSet<DonHang> DonHangs { get; set; }
+        public virtual DbSet<LoginAdmin> LoginAdmins { get; set; }
         public virtual DbSet<Menu> Menus { get; set; }
         public virtual DbSet<NhomSanPham> NhomSanPhams { get; set; }
         public virtual DbSet<SanPham> SanPhams { get; set; }

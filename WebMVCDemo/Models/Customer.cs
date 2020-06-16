@@ -17,7 +17,7 @@ namespace WebMVCDemo.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Customer()
         {
-            this.HoaDons = new HashSet<HoaDon>();
+            this.DonHangs = new HashSet<DonHang>();
         }
     
         public int MaKH { get; set; }
@@ -30,6 +30,6 @@ namespace WebMVCDemo.Models
         public Nullable<System.DateTime> DateBegin { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<HoaDon> HoaDons { get; set; }
+        public virtual ICollection<DonHang> DonHangs { get; set; }
     }
 }
